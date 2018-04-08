@@ -1,12 +1,14 @@
-title: Cedlemo
-subtitle: Notes and toy projects.
+title: "Cedlemo"
+subtitle: "Notes and toy projects."
 description: >- # this means to ignore newlines until "baseurl:"
   My notes.
-author: Cedlemo
-email: cedlemo@gmx.com
-avatar: assets/images/avatar.jpg
+author: "Cedlemo"
+email: "cedlemo@gmx.com"
+avatar: "assets/images/avatar.jpg"
 github_url:
 twitter_url:
+encoding:            "utf-8"
+markdown_ext:        "markdown,mkdown,mkdn,mkd,md"
 # The following settings are NECESSARY for the Prologue theme to run:
-theme: jekyll-theme-prologue
+theme: "jekyll-theme-prologue"
 collections: [sections]
