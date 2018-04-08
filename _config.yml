@@ -1,1 +1,12 @@
-theme: jekyll-theme-modernist
+title: Cedlemo
+subtitle: Notes and toy projects.
+description: >- # this means to ignore newlines until "baseurl:"
+  My notes.
+author: Cedlemo
+email: cedlemo@gmx.com
+avatar: assets/images/avatar.jpg
+github_url:
+twitter_url:
+# The following settings are NECESSARY for the Prologue theme to run:
+theme: jekyll-theme-prologue
+collections: [sections]
