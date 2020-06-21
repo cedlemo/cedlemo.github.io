@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on My notes</title>
-    <link>/posts/</link>
-    <description>Recent content in Posts on My notes</description>
+    <title>notes on My notes</title>
+    <link>/categories/notes/</link>
+    <description>Recent content in notes on My notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 21 Jun 2020 18:49:07 +0200</lastBuildDate>
     
-        <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/categories/notes/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,16 +20,6 @@
       <description>Playing with Cohttp and Yojson Few days ago I needed to parse a json file. This file can be found in a github repository. The idea is to try to download the very last version, if the download fails, a local copy is used.
 The libraries Cohttp It is an OCaml library for HTTP clients and servers using Lwt and Async
  https://github.com/mirage/ocaml-cohttp  Yojson It is a Low-level JSON parsing and pretty-printing library for OCaml</description>
-      
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>/posts/my-first-post/</link>
-      <pubDate>Sun, 21 Jun 2020 18:20:17 +0200</pubDate>
-      
-      <guid>/posts/my-first-post/</guid>
-      <description></description>
       
     </item>
     

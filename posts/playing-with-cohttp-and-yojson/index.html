@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.72.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Playing With Cohttp and Yojson&nbsp;&ndash;&nbsp;My notes</title><link rel="stylesheet" href="/css/core.min.5e39f04a0c2c64b3741f94e7e58162327e3c30d7b92e327a8ac77589da0f7b91e1d3c2469dc5b9479ca7246d5b984e4c.css" integrity="sha384-XjnwSgwsZLN0H5Tn5YFiMn48MNe5LjJ6isd1idoPe5Hh08JGncW5R5ynJG1bmE5M"><meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Playing With Cohttp and Yojson" /><body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">My notes</span></a></span>
+        <span class="header right-side"></span></div></section><section id="content"><div class="article-container"><section class="article header">
+    <h1 class="article title">Playing With Cohttp and Yojson</h1><p class="article date">2020-06-21</p></section><article class="article markdown-body"><h1 id="playing-with-cohttp-and-yojson">Playing with Cohttp and Yojson</h1>
+<p>Few days ago I needed to parse a json file. This file can be found in a github repository.
+The idea is to try to download the very last version, if the download fails, a local copy is used.</p>
+<h2 id="the-libraries">The libraries</h2>
+<h3 id="cohttp">Cohttp</h3>
+<p>It is an OCaml library for HTTP clients and servers using Lwt and Async</p>
+<ul>
+<li><a href="https://github.com/mirage/ocaml-cohttp">https://github.com/mirage/ocaml-cohttp</a></li>
+</ul>
+<h3 id="yojson">Yojson</h3>
+<p>It is a Low-level JSON parsing and pretty-printing library for OCaml</p>
+<ul>
+<li><a href="https://github.com/ocaml-community/yojson">https://github.com/ocaml-community/yojson</a></li>
+</ul>
+<h2 id="example">Example</h2>
+<p>The context, is that I wanted to be able to get the OS version and Linux distribution of a running system.
+I decided to mimic the JavaScript <a href="https://github.com/retrohacker/getos"target="_blank">getos project</a>.</p>
+<p>Here is the organisation of the project:</p>
+<pre><code>.
+├── bin
+│   ├── display_os.ml
+│   └── dune
+├── data
+│   └── os.json
+├── dune-project
+├── getos.opam
+└── lib
+    ├── dune
+    └── getos.ml
+</code></pre><ul>
+<li>lib/getos.ml</li>
+</ul>
+<pre><code>open Cohttp
+open Cohttp_lwt_unix
+module YojsonB = Yojson.Basic
+module YojsonBU = Yojson.Basic.Util
+
+let os_json_uri = &quot;https://raw.githubusercontent.com/retrohacker/getos/master/os.json&quot;
+
+type os = {
+  os: string;
+  dist: string;
+  codename: string;
+  release: string;
+}
+</code></pre><p>The following part is simple, first it tries to download the json file. If it succeeds, the body is
+transformed into a string that Yojson will turn into a Yojson.t type with <code>Yojson.Basic.from_string</code>.</p>
+<p>If the Http Client fails to download the file, a Yojson.t element is generated from a local copy with
+<code>Yojson.Basic.from_file</code>.</p>
+<pre><code>(** Download the last os.json reference
+    If the download fails, use the one in data/os.json *)
+let get_os_json () =
+  let%lwt (resp, body) = Client.get (Uri.of_string os_json_uri) in
+  let code = resp |&gt; Response.status |&gt; Code.code_of_status in
+  let os_json =
+    if code = 200 then
+      let%lwt json = Cohttp_lwt.Body.to_string body in Lwt.return @@ YojsonB.from_string json
+    else let () = print_endline &quot;Download of os.json failed, using the packaged one.&quot; in
+      Lwt.return @@ YojsonB.from_file &quot;data/os.json&quot;
+  in os_json
+</code></pre><p>Now that we have a Yojson.t type element, it is time to manipulate it in order to print or access data:</p>
+<ul>
+<li><code>Yojson.Basic.Util.keys</code>: it returns a list of strings that are the keys of a json object.</li>
+<li><code>Yojson.Basic.Util.member</code>: it returns the value of a Yojson.t element that correspond to a specific key.</li>
+<li><code>Yojson.Basic.Util.to_list</code>: if a Yojson.t element is an array, it returns a list of Yojson.t elements.</li>
+<li><code>Yojson.Basic.Util.to_string</code>: it returns a string from a Yojson.t element.</li>
+</ul>
+<pre><code>let getLinuxDistro () =
+  let%lwt os_json = get_os_json () in
+  (*
+   * For each files which are registred as key in the main json data
+   * make fs.stat to check if it exists
+   * if it exists get the array of possible distributions
+   * for each possible distributions, try to match the content of the
+   * file with some predefined rules defined here:
+   * https://github.com/retrohacker/getos/tree/master/logic
+   * how to format those rules in OCaml ?
+   * *)
+  let keys = YojsonBU.keys os_json in
+  let%lwt file = Lwt_list.find_s Lwt_unix.file_exists keys in
+  let () = print_endline file in
+  let distribs = YojsonBU.member file os_json |&gt; YojsonBU.to_list |&gt; List.map YojsonBU.to_string in
+  let () = List.iter print_endline distribs in
+  Lwt.return {os = &quot;Linux&quot;; dist = &quot;&quot;; codename = &quot;&quot;; release = &quot;&quot;}
+
+let infos () =
+  if ( Sys.os_type &lt;&gt; &quot;Unix&quot; ) then Lwt.return {os = Sys.os_type; dist = &quot;&quot;; codename = &quot;&quot;; release = &quot;&quot;}
+  else getLinuxDistro ()
+</code></pre></article><section class="article labels"><a class="category" href=/categories/development/>development</a><a class="category" href=/categories/notes/>notes</a><a class="tag" href=/tags/ocaml/>OCaml</a><a class="tag" href=/tags/functional-programming/>Functional Programming</a><a class="tag" href=/tags/http/>Http</a><a class="tag" href=/tags/json/>Json</a></section></div>
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/posts/my-first-post/"><span class="iconfont icon-article"></span>My First Post</a></p></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">My notes</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section></body>
+
+</html>
