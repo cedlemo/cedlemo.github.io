@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>admin on My notes</title>
+    <link>/categories/admin/</link>
+    <description>Recent content in admin on My notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Jun 2020 11:33:18 +0200</lastBuildDate>
+    
+        <atom:link href="/categories/admin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Msql Server on Linux</title>
+      <link>/posts/msql-server-on-linux/</link>
+      <pubDate>Wed, 24 Jun 2020 11:33:18 +0200</pubDate>
+      
+      <guid>/posts/msql-server-on-linux/</guid>
+      <description>Using MSQL-SERVER on Linux Installation yay -S mssql-server msodbcsql mssql-tools azuredatastudio Configuration sudo /opt/mssql/bin/mssql-conf setup Running a graphical administration application $ azuredatastudio </description>
+      
+    </item>
+    
+  </channel>
+</rss>

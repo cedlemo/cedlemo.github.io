@@ -6,9 +6,40 @@
     <description>Recent content in Categories on My notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Wed, 24 Jun 2020 11:33:18 +0200</lastBuildDate>
     
         <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>admin</title>
+      <link>/categories/admin/</link>
+      <pubDate>Wed, 24 Jun 2020 11:33:18 +0200</pubDate>
+      
+      <guid>/categories/admin/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>notes</title>
+      <link>/categories/notes/</link>
+      <pubDate>Wed, 24 Jun 2020 11:33:18 +0200</pubDate>
+      
+      <guid>/categories/notes/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>development</title>
+      <link>/categories/development/</link>
+      <pubDate>Sun, 21 Jun 2020 19:33:50 +0200</pubDate>
+      
+      <guid>/categories/development/</guid>
+      <description></description>
+      
+    </item>
     
   </channel>
 </rss>

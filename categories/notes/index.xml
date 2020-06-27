@@ -6,10 +6,20 @@
     <description>Recent content in notes on My notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 21 Jun 2020 19:33:50 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jun 2020 11:33:18 +0200</lastBuildDate>
     
         <atom:link href="/categories/notes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Msql Server on Linux</title>
+      <link>/posts/msql-server-on-linux/</link>
+      <pubDate>Wed, 24 Jun 2020 11:33:18 +0200</pubDate>
+      
+      <guid>/posts/msql-server-on-linux/</guid>
+      <description>Using MSQL-SERVER on Linux Installation yay -S mssql-server msodbcsql mssql-tools azuredatastudio Configuration sudo /opt/mssql/bin/mssql-conf setup Running a graphical administration application $ azuredatastudio </description>
+      
+    </item>
     
     <item>
       <title>Using Lwt_ppx Rewriter</title>
